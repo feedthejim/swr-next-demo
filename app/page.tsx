@@ -1,4 +1,4 @@
-import { prefetch, PreloadBoundary } from "@swr-next/server";
+import { prefetch, PreloadBoundary } from "@swr-next";
 import { photos } from "@/app/lib/resources/photos";
 import { DemoShowcase } from "./components/DemoShowcase";
 

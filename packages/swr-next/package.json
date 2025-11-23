@@ -2,16 +2,16 @@
   "name": "swr-next",
   "exports": {
     "./client": {
-      "react-server": "./client.react-server.js",
-      "default": "./client.js"
+      "react-server": "./client-stub.ts",
+      "default": "./client.ts"
     },
     "./server": {
-      "react-server": "./server.react-server.js",
-      "default": "./server.js"
+      "react-server": "./server.tsx",
+      "default": "./server-stub.ts"
     },
     ".": {
-      "react-server": "./core.react-server.js",
-      "default": "./core.js"
+      "react-server": "./server.tsx",
+      "default": "./client.ts"
     }
   }
 }

@@ -1,7 +1,8 @@
-// app/lib/resources/photos.ts
-import { defineResource } from "@swr-next";
+// Server-only resource definition
+import { defineResource } from "@swr-next/server";
 
 type Photo = { id: number; title: string; thumbnailUrl: string };
+
 export const photos = defineResource<{ albumId: number }, Photo[]>({
   key: ({ albumId }) => ["photos", albumId],
   server: async ({ albumId }) => {

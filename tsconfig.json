@@ -20,7 +20,8 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@swr-next/*": ["./packages/swr-next/*"]
+      "@swr-next/*": ["./packages/swr-next/*"],
+      "@swr-next": ["./packages/swr-next"]
     }
   },
   "include": [

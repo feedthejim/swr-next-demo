@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { usePreloadedSWR, useLazySWR } from "@swr-next/client";
+import { usePreloadedSWR, useLazySWR } from "@swr-next";
 import { photos } from "@/app/lib/resources/photos";
 import { CodeBlock } from "./CodeBlock";
 
@@ -104,7 +104,7 @@ export function DemoShowcase() {
               <CodeBlock
                 title="app/page.tsx (Server Component)"
                 code={`import { prefetch, PreloadBoundary } from "@swr-next/server";
-import { photos } from "./lib/resources/photos";
+import { photos } from "./lib/resources/photos-server";
 
 export default async function Page() {
   // Server-side prefetch
@@ -124,7 +124,7 @@ export default async function Page() {
                 title="PhotoGrid.tsx (Client Component)"
                 code={`"use client";
 import { usePreloadedSWR } from "@swr-next/client";
-import { photos } from "./lib/resources/photos";
+import { photos } from "./lib/resources/photos-client";
 
 export function PhotoGrid() {
   const { data, error, mutate } = usePreloadedSWR(
