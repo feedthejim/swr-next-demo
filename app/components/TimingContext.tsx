@@ -16,6 +16,7 @@ interface TimingData {
 interface TimingContextType {
   serverTiming: TimingData;
   clientTiming: TimingData;
+  isomorphicTiming: TimingData;
 }
 
 const TimingContext = createContext<TimingContextType | undefined>(undefined);
@@ -24,12 +25,17 @@ export function TimingProvider({ children }: { children: ReactNode }) {
   const [timing, setTiming] = useState<{
     server: TimingData;
     client: TimingData;
+    isomorphic: TimingData;
   }>({
     server: {
       fallback: 0,
       final: 0,
     },
     client: {
+      fallback: 0,
+      final: 0,
+    },
+    isomorphic: {
       fallback: 0,
       final: 0,
     },
@@ -54,6 +60,12 @@ export function TimingProvider({ children }: { children: ReactNode }) {
         const clientFinal = marks.find(
           (m) => m.name === "client-final-rendered"
         );
+        const isomorphicFallback = marks.find(
+          (m) => m.name === "isomorphic-fallback-rendered"
+        );
+        const isomorphicFinal = marks.find(
+          (m) => m.name === "isomorphic-final-rendered"
+        );
 
         if (serverFallback && !newTiming.server.fallback) {
           newTiming.server.fallback = serverFallback.startTime;
@@ -66,6 +78,12 @@ export function TimingProvider({ children }: { children: ReactNode }) {
         }
         if (clientFinal && !newTiming.client.final) {
           newTiming.client.final = clientFinal.startTime;
+        }
+        if (isomorphicFallback && !newTiming.isomorphic.fallback) {
+          newTiming.isomorphic.fallback = isomorphicFallback.startTime;
+        }
+        if (isomorphicFinal && !newTiming.isomorphic.final) {
+          newTiming.isomorphic.final = isomorphicFinal.startTime;
         }
         console.log("newTiming", newTiming);
         setTiming(newTiming);
@@ -84,6 +102,7 @@ export function TimingProvider({ children }: { children: ReactNode }) {
       value={{
         serverTiming: timing.server,
         clientTiming: timing.client,
+        isomorphicTiming: timing.isomorphic,
       }}
     >
       {children}

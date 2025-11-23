@@ -9,6 +9,7 @@
     "./client": {
       "react-server": "./client-stub.ts",
       "default": "./client.ts"
-    }
+    },
+    "./isomorphic": "./isomorphic.ts"
   }
 }

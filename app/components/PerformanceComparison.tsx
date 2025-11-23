@@ -5,9 +5,9 @@ import { CodeBlock } from "./CodeBlock";
 import { useTiming } from "./TimingContext";
 
 export function PerformanceComparison() {
-  const { serverTiming, clientTiming } = useTiming();
+  const { serverTiming, clientTiming, isomorphicTiming } = useTiming();
   const [showCode, setShowCode] = useState<string | null>("comparison");
-  console.log("results", serverTiming, clientTiming);
+  console.log("results", serverTiming, clientTiming, isomorphicTiming);
   return (
     <section className="space-y-6">
       <div className="text-center">
@@ -15,7 +15,7 @@ export function PerformanceComparison() {
           Performance Comparison
         </h2>
         <p className="text-gray-400">
-          Server prefetching vs client-only loading timeline
+          Server prefetching vs isomorphic vs client-only loading timeline
         </p>
       </div>
 
@@ -47,7 +47,7 @@ export function PerformanceComparison() {
                       style={{
                         width: `${
                           (serverTiming.fallback /
-                            Math.max(serverTiming.final, clientTiming.final)) *
+                            Math.max(serverTiming.final, clientTiming.final, isomorphicTiming.final)) *
                           100
                         }%`,
                       }}
@@ -62,13 +62,71 @@ export function PerformanceComparison() {
                       style={{
                         width: `${
                           ((serverTiming.final - serverTiming.fallback) /
-                            Math.max(serverTiming.final, clientTiming.final)) *
+                            Math.max(serverTiming.final, clientTiming.final, isomorphicTiming.final)) *
                           100
                         }%`,
                       }}
                     >
                       <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-xs">
                         {Math.round(serverTiming.final - serverTiming.fallback)}
+                        ms
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-32 h-4 bg-gray-700 rounded relative animate-pulse">
+                    <span className="absolute inset-0 flex items-center justify-center text-gray-400 font-bold text-xs">
+                      measuring...
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Isomorphic timeline */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <div className="w-4 h-4 bg-purple-500 rounded-full"></div>
+              <span className="font-medium text-purple-400">
+                Isomorphic Loading
+              </span>
+            </div>
+            <div className="ml-7 space-y-1">
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-xs text-gray-400 w-20">Timeline:</span>
+                {isomorphicTiming.fallback > 0 &&
+                isomorphicTiming.final > 0 &&
+                clientTiming.final > 0 ? (
+                  <div className="flex items-center gap-0 w-full max-w-md">
+                    {/* Fallback bar */}
+                    <div
+                      className="h-4 bg-purple-400 rounded-l relative"
+                      style={{
+                        width: `${
+                          (isomorphicTiming.fallback /
+                            Math.max(serverTiming.final, clientTiming.final, isomorphicTiming.final)) *
+                          100
+                        }%`,
+                      }}
+                    >
+                      <span className="absolute inset-0 flex items-center justify-center text-black font-bold text-xs">
+                        {Math.round(isomorphicTiming.fallback)}ms
+                      </span>
+                    </div>
+                    {/* Content bar */}
+                    <div
+                      className="h-4 bg-gradient-to-r from-purple-500 to-purple-400 rounded-r relative"
+                      style={{
+                        width: `${
+                          ((isomorphicTiming.final - isomorphicTiming.fallback) /
+                            Math.max(serverTiming.final, clientTiming.final, isomorphicTiming.final)) *
+                          100
+                        }%`,
+                      }}
+                    >
+                      <span className="absolute inset-0 flex items-center justify-center text-white font-bold text-xs">
+                        {Math.round(isomorphicTiming.final - isomorphicTiming.fallback)}
                         ms
                       </span>
                     </div>
@@ -105,7 +163,7 @@ export function PerformanceComparison() {
                       style={{
                         width: `${
                           (clientTiming.fallback /
-                            Math.max(serverTiming.final, clientTiming.final)) *
+                            Math.max(serverTiming.final, clientTiming.final, isomorphicTiming.final)) *
                           100
                         }%`,
                       }}
@@ -120,7 +178,7 @@ export function PerformanceComparison() {
                       style={{
                         width: `${
                           ((clientTiming.final - clientTiming.fallback) /
-                            Math.max(serverTiming.final, clientTiming.final)) *
+                            Math.max(serverTiming.final, clientTiming.final, isomorphicTiming.final)) *
                           100
                         }%`,
                       }}
@@ -149,10 +207,10 @@ export function PerformanceComparison() {
             <div>
               <div className="font-medium text-white">Performance Impact</div>
               <div className="text-sm text-gray-300 mt-1">
-                Server prefetching streams data during the initial page load,
-                while client-only loading requires separate API requests after
-                hydration. This eliminates request waterfalls and improves Core
-                Web Vitals (LCP, CLS).
+                Server prefetching streams data during the initial page load. Isomorphic SWR 
+                provides universal loading that works seamlessly on both server and client.
+                Client-only loading requires separate API requests after hydration. 
+                Server and isomorphic approaches eliminate request waterfalls and improve Core Web Vitals.
               </div>
             </div>
           </div>
