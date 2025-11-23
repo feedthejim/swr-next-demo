@@ -1,0 +1,17 @@
+{
+  "name": "swr-next",
+  "exports": {
+    "./client": {
+      "react-server": "./client.react-server.js",
+      "default": "./client.js"
+    },
+    "./server": {
+      "react-server": "./server.react-server.js",
+      "default": "./server.js"
+    },
+    ".": {
+      "react-server": "./core.react-server.js",
+      "default": "./core.js"
+    }
+  }
+}

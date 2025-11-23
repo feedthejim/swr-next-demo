@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@swr-next/*": ["./packages/swr-next/*"]
     }
   },
   "include": [
