@@ -4,7 +4,8 @@
       "Bash(pnpm install:*)",
       "Bash(pnpm add:*)",
       "Bash(pnpm dev:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "ask": []

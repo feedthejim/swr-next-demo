@@ -1,38 +1,39 @@
-import { prefetch, PreloadBoundary } from "@swr-next";
-import { photos } from "@/app/lib/resources/photos";
-import { DemoShowcase } from "./components/DemoShowcase";
+import { prefetch, PreloadBoundary } from "@swr-next/server";
+import { pokemon } from "@/app/lib/resources/pokemon";
+import { DemoContainer } from "./components/DemoContainer";
+import { ResourceDefinitionSection } from "./components/ResourceDefinitionSection";
 
 export default async function Home() {
   // Server-side prefetch for immediate demo
-  const prefetchedPhotos = prefetch(photos, { albumId: 1 });
+  const prefetchedPokemon = prefetch(pokemon, { generation: 1 });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <div className="bg-white border-b">
+      <div className="border-b border-gray-800">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              🚀 swr-next
+            
+            <h1 className="text-4xl font-bold text-white mb-3">
+              swr-next
             </h1>
-            <p className="text-xl text-gray-600 mb-6">
-              Universal React data fetching that bridges server-side rendering and client-side hydration with seamless SWR integration
+            
+            <p className="text-lg text-gray-400 mb-4">
+              Server-side data fetching with client-side SWR
             </p>
-            <div className="flex flex-wrap justify-center gap-2 text-sm">
-              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full">Server Components</span>
-              <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full">SWR Integration</span>
-              <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full">TypeScript</span>
-              <span className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full">Bundle Splitting</span>
-            </div>
           </div>
         </div>
       </div>
 
       {/* Demo */}
-      <div className="container mx-auto px-4 py-8">
-        <PreloadBoundary items={[prefetchedPhotos]}>
-          <DemoShowcase />
+      <div className="container mx-auto px-4 py-16">
+        <PreloadBoundary items={[prefetchedPokemon]}>
+          <DemoContainer />
         </PreloadBoundary>
+        
+        <div className="max-w-6xl mx-auto mt-12">
+          <ResourceDefinitionSection />
+        </div>
       </div>
     </div>
   );
