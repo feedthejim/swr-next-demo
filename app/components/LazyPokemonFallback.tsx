@@ -10,18 +10,24 @@ export function LazyPokemonFallback() {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
+      <div className="flex justify-between items-center">
         <p className="text-sm text-orange-400 font-medium" elementtiming="client-fallback">
-          🔄 Waiting for hydration...
+          🔄 Loading data after hydration...
         </p>
-        <div className="grid grid-cols-4 gap-2">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="aspect-square bg-gray-800 rounded-xl opacity-50 animate-pulse"
-            />
-          ))}
+        <div className="text-xs text-blue-400 font-mono">
+          Time to content: measuring...
         </div>
+      </div>
+
+      <div className="grid grid-cols-4 gap-2">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div
+            key={i}
+            className="aspect-square bg-gray-800 rounded-xl border border-gray-600 animate-pulse"
+          />
+        ))}
+      </div>
     </div>
   );
 }

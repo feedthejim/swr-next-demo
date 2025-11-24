@@ -4,18 +4,19 @@ interface PreloadedPokemonSectionProps {
 
 export function PreloadedPokemonSection({ children }: PreloadedPokemonSectionProps) {
   return (
-    <section className="space-y-6">
-      <div className="text-center">
-        <h2 className="text-2xl font-bold text-white mb-2">
-          Server Prefetching
+    <div className="h-full flex flex-col">
+      <div className="text-center mb-6">
+        <h2 className="text-xl font-semibold text-white mb-2">
+          Server Prefetched + Client SWR
         </h2>
-        <p className="text-gray-400">
+        <p className="text-sm text-gray-400">
           Data fetched during SSR - instant content on page load
         </p>
       </div>
 
-      {/* Live Demo - suspense boundary only around dynamic content */}
-      {children}
-    </section>
+      <div className="flex-1">
+        {children}
+      </div>
+    </div>
   );
 }

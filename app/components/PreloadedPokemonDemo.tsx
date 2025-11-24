@@ -20,7 +20,7 @@ export function PreloadedPokemonDemo() {
   return (
     <div className="bg-gray-900 rounded-lg border border-gray-700 p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-white">Server SWR</h3>
+          <h3 className="text-lg font-semibold text-white">Server Prefetched + Client SWR</h3>
         </div>
 
         <div className="space-y-3">

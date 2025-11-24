@@ -16,6 +16,7 @@ interface TimingData {
 interface TimingContextType {
   serverTiming: TimingData;
   clientTiming: TimingData;
+  nativeTiming: TimingData;
 }
 
 const TimingContext = createContext<TimingContextType | undefined>(undefined);
@@ -24,12 +25,17 @@ export function TimingProvider({ children }: { children: ReactNode }) {
   const [timing, setTiming] = useState<{
     server: TimingData;
     client: TimingData;
+    native: TimingData;
   }>({
     server: {
       fallback: 0,
       final: 0,
     },
     client: {
+      fallback: 0,
+      final: 0,
+    },
+    native: {
       fallback: 0,
       final: 0,
     },
@@ -71,6 +77,16 @@ export function TimingProvider({ children }: { children: ReactNode }) {
                 newTiming.client.final = entry.renderTime;
               }
               break;
+            case "native-fallback":
+              if (!newTiming.native.fallback) {
+                newTiming.native.fallback = entry.renderTime;
+              }
+              break;
+            case "native-final":
+              if (!newTiming.native.final) {
+                newTiming.native.final = entry.renderTime;
+              }
+              break;
           }
         }
 
@@ -94,6 +110,7 @@ export function TimingProvider({ children }: { children: ReactNode }) {
       value={{
         serverTiming: timing.server,
         clientTiming: timing.client,
+        nativeTiming: timing.native,
       }}
     >
       {children}

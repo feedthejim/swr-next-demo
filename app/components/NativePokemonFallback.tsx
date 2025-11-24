@@ -1,24 +1,14 @@
-"use client";
-
-import { useEffect } from "react";
-
-export function PreloadedPokemonFallback() {
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.__recordElementTiming) {
-      window.__recordElementTiming("server-fallback");
-    }
-  }, []);
-
+export function NativePokemonFallback() {
   return (
     <div className="bg-gray-900 rounded-lg border border-gray-700 p-6 h-full flex flex-col">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-white">Server Prefetched + Client SWR</h3>
+        <h3 className="text-lg font-semibold text-white">Native Server Component</h3>
       </div>
       
       <div className="space-y-3 flex-1">
         <div className="flex justify-between items-center">
-          <p className="text-sm text-yellow-400 font-medium" elementtiming="server-fallback">
-            ⚡ Loading prefetched data...
+          <p className="text-sm text-purple-400 font-medium" elementtiming="native-fallback">
+            ⚡ Loading data on server...
           </p>
           <div className="text-xs text-blue-400 font-mono">
             Time to content: measuring...

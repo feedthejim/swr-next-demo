@@ -1,7 +1,6 @@
 import { prefetch, PreloadBoundary } from "@swr-next/server";
 import { pokemon } from "@/app/lib/resources/pokemon";
 import { DemoContainer } from "./components/DemoContainer";
-import { ResourceDefinitionSection } from "./components/ResourceDefinitionSection";
 
 export default async function Home() {
   // Server-side prefetch for immediate demo
@@ -27,10 +26,6 @@ export default async function Home() {
         <PreloadBoundary items={[prefetchedPokemon]}>
           <DemoContainer />
         </PreloadBoundary>
-
-        <div className="max-w-6xl mx-auto mt-12">
-          <ResourceDefinitionSection />
-        </div>
       </div>
     </div>
   );
