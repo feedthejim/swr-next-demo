@@ -13,6 +13,18 @@ export default async function Home() {
         <div className="container mx-auto px-4 py-8">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl font-bold text-white mb-3">swr-next</h1>
+            
+            <div className="flex justify-center gap-2 mb-4">
+              <div className="bg-blue-600 text-white px-3 py-1 rounded text-sm font-medium">
+                Regular Demo
+              </div>
+              <a 
+                href="/slow"
+                className="bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white px-3 py-1 rounded text-sm font-medium transition-colors"
+              >
+                Heavy Data Demo
+              </a>
+            </div>
 
             <p className="text-lg text-gray-400 mb-4">
               Server-side data fetching with client-side SWR
