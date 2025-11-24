@@ -38,7 +38,7 @@ export function LazyPokemonDemo() {
       </div>
 
       <div className="grid grid-cols-4 gap-2">
-        {data?.slice(0, 8).map((poke) => (
+        {data?.map((poke) => (
           <div
             key={poke.id}
             className="group relative aspect-square bg-gray-800 rounded-xl border border-gray-600 hover:border-gray-500 transition-all duration-200 hover:scale-105"

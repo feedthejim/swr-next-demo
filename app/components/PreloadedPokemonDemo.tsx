@@ -29,7 +29,7 @@ export function PreloadedPokemonDemo() {
             </div>
           </div>
           <div className="grid grid-cols-4 gap-2">
-            {preloadedData?.slice(0, 8).map((poke) => (
+            {preloadedData?.map((poke) => (
               <div
                 key={poke.id}
                 className="group relative aspect-square bg-gray-800 rounded-xl border border-gray-600 hover:border-gray-500 transition-all duration-200 hover:scale-105"

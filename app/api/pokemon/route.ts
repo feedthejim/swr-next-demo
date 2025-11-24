@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { fetchPokemonByGeneration } from "@/app/lib/pokemon-api";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -9,31 +10,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const limit = 20;
-    const offset = (parseInt(generation) - 1) * limit;
-    
-    const response = await fetch(
-      `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`,
-      {
-        headers: {
-          "Cache-Control": "no-cache",
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    const generationNum = parseInt(generation);
+    if (isNaN(generationNum) || generationNum < 1) {
+      return Response.json({ error: "generation must be a positive number" }, { status: 400 });
     }
 
-    const data = await response.json();
-    
-    // Fetch detailed data for each Pokemon
-    const detailPromises = data.results.map(async (p: any) => {
-      const detailResponse = await fetch(p.url);
-      return detailResponse.json();
-    });
-    
-    const pokemon = await Promise.all(detailPromises);
+    const pokemon = await fetchPokemonByGeneration(generationNum);
     return Response.json(pokemon);
   } catch (error) {
     console.error("Pokemon API error:", error);
