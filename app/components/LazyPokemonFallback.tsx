@@ -1,17 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
+
 export function LazyPokemonFallback() {
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.__recordElementTiming) {
+      window.__recordElementTiming("client-fallback");
+    }
+  }, []);
+
   return (
-    <>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `performance.mark('client-fallback-rendered');`,
-        }}
-      />
-      <div className="space-y-4">
-        <div className="text-sm text-orange-400 font-medium">
+    <div className="space-y-4">
+        <p className="text-sm text-orange-400 font-medium" elementtiming="client-fallback">
           🔄 Waiting for hydration...
-        </div>
+        </p>
         <div className="grid grid-cols-4 gap-2">
           {Array.from({ length: 8 }).map((_, i) => (
             <div
@@ -20,7 +22,6 @@ export function LazyPokemonFallback() {
             />
           ))}
         </div>
-      </div>
-    </>
+    </div>
   );
 }

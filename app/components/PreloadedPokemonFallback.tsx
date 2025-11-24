@@ -1,18 +1,20 @@
 "use client";
 
+import { useEffect } from "react";
+
 export function PreloadedPokemonFallback() {
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.__recordElementTiming) {
+      window.__recordElementTiming("server-fallback");
+    }
+  }, []);
+
   return (
-    <>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `performance.mark('server-fallback-rendered');`,
-        }}
-      />
-      <div className="space-y-4">
+    <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <div className="text-sm text-yellow-400 font-medium">
+          <p className="text-sm text-yellow-400 font-medium" elementtiming="server-fallback">
             ⚡ Streaming from server...
-          </div>
+          </p>
           <div className="text-xs text-blue-400 font-mono">
             Time to content: measuring...
           </div>
@@ -26,7 +28,6 @@ export function PreloadedPokemonFallback() {
             />
           ))}
         </div>
-      </div>
-    </>
+    </div>
   );
 }

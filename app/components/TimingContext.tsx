@@ -36,48 +36,58 @@ export function TimingProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    const checkPerformanceMarks = () => {
-      try {
-        const marks = performance.getEntriesByType("mark");
-        const newTiming = { ...timing };
+    if (typeof window === "undefined") {
+      return;
+    }
 
-        // Find marks and calculate timing
-        const serverFallback = marks.find(
-          (m) => m.name === "server-fallback-rendered"
-        );
-        const serverFinal = marks.find(
-          (m) => m.name === "server-final-rendered"
-        );
-        const clientFallback = marks.find(
-          (m) => m.name === "client-fallback-rendered"
-        );
-        const clientFinal = marks.find(
-          (m) => m.name === "client-final-rendered"
-        );
-
-        if (serverFallback && !newTiming.server.fallback) {
-          newTiming.server.fallback = serverFallback.startTime;
-        }
-        if (serverFinal && !newTiming.server.final) {
-          newTiming.server.final = serverFinal.startTime;
-        }
-        if (clientFallback && !newTiming.client.fallback) {
-          newTiming.client.fallback = clientFallback.startTime;
-        }
-        if (clientFinal && !newTiming.client.final) {
-          newTiming.client.final = clientFinal.startTime;
-        }
-
-        setTiming(newTiming);
-      } catch (error) {
-        console.log("Performance API not available");
+    const processStoredEntries = () => {
+      if (!window.__elementTimingEntries) {
+        console.log("no entries");
+        return;
       }
+      console.log("entries", window.__elementTimingEntries);
+      setTiming((prevTiming) => {
+        const newTiming = { ...prevTiming };
+
+        for (const entry of window.__elementTimingEntries) {
+          switch (entry.identifier) {
+            case "server-fallback":
+              if (!newTiming.server.fallback) {
+                newTiming.server.fallback = entry.renderTime;
+              }
+              break;
+            case "server-final":
+              if (!newTiming.server.final) {
+                newTiming.server.final = entry.renderTime;
+              }
+              break;
+            case "client-fallback":
+              if (!newTiming.client.fallback) {
+                newTiming.client.fallback = entry.renderTime;
+              }
+              break;
+            case "client-final":
+              if (!newTiming.client.final) {
+                newTiming.client.final = entry.renderTime;
+              }
+              break;
+          }
+        }
+
+        return newTiming;
+      });
     };
 
-    const interval = setInterval(checkPerformanceMarks, 1000);
+    // Process any entries that were already captured
+    processStoredEntries();
 
-    return () => clearInterval(interval);
-  }, [timing]);
+    // Set up interval to check for new entries
+    const interval = setInterval(processStoredEntries, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <TimingContext.Provider

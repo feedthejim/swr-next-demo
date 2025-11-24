@@ -24,6 +24,59 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.__elementTimingEntries = [];
+              window.__customTimingMarks = {};
+              
+              // Function to record timing manually
+              window.__recordElementTiming = function(identifier) {
+                const now = performance.now();
+                console.log('Recording timing for:', identifier, now);
+                window.__elementTimingEntries.push({
+                  identifier: identifier,
+                  renderTime: now,
+                  timestamp: Date.now()
+                });
+              };
+              
+              // Try Element Timing first
+              if (typeof PerformanceObserver !== 'undefined') {
+                try {
+                  console.log("Setting up PerformanceObserver for element timing");
+                  const observer = new PerformanceObserver((list) => {
+                    console.log("PerformanceObserver callback triggered");
+                    const entries = list.getEntries();
+                    console.log("Entries received:", entries);
+                    for (const entry of entries) {
+                      console.log("Processing entry:", entry.entryType, entry.name, entry);
+                      if (entry.entryType === 'element') {
+                        console.log("Element timing entry:", entry);
+                        window.__elementTimingEntries.push({
+                          identifier: entry.identifier,
+                          renderTime: entry.renderTime || entry.loadTime,
+                          timestamp: Date.now()
+                        });
+                      }
+                    }
+                  });
+                  
+                  // Try to observe element entries
+                  observer.observe({ entryTypes: ['element'] });
+                  window.__elementTimingObserver = observer;
+                  console.log("PerformanceObserver set up successfully");
+                } catch (error) {
+                  console.warn('Element Timing not supported:', error);
+                }
+              } else {
+                console.warn('PerformanceObserver not available');
+              }
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
